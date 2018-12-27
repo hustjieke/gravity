@@ -1,58 +1,62 @@
-![2.0 Product](docs/2.0/product.png)
-
 # Gravity
 
-Gravity 是一款数据复制组件，提供全量、增量数据同步，以及向消息队列发布数据更新。
+[中文文档](./README-cn.md)
 
-DRC 的设计目标是：
-- 支持多种数据源和目标的，可灵活定制的数据复制组件
-- 支持基于 Kubernetes 的 PaaS 平台，简化运维任务
+Gravity is an open source data replication middleware from Mobike. It is used to synchronize the full data and incremental data and send the data mutation to the message queue.
 
+It is designed to be a customizable data replication tool that
 
-### 使用场景
+- Supports multiple data sources, data output platforms, and data consistency requirements
+- Supports Kubernetes-based PaaS platform to facilitate the maintenance tasks
 
-- 大数据总线：发送 MySQL Binlog，Mongo Oplog 的数据变更到 kafka 供下游消费
-- 单向数据同步：MySQL --> MySQL 的全量、增量同步
-- 双向数据同步：MySQL <--> MySQL 的双向增量同步，同步过程中可以防止循环复制
-- 分库分表到合库的同步：MySQL 分库分表 --> 合库的同步，可以指定源表和目标表的对应关系
-- 在线数据变换：同步过程中，可支持对进行数据变换
+## Architecture
 
-### 功能列表
+[DRC 2.0 Architecture](docs/2.0/drc-architecture.png)
 
-- 数据源
+## Application scenarios
 
-|   | 是否支持  |
-|---|---|
-|  MySQL Binlog | ✅  | 
-|  MySQL 全量 |  ✅ |   
-|  Mongo Oplog | ✅  | 
-|  TiDB Binlog | 开发中  |
-|  PostgreSQL WAL | 开发中  |
+- Big data bus: Sends the data mutation of the MySQL binlog and MongoDB Oplog to Kafka for consumption in the downstream.
+- Unidirectional data synchronization: Synchronizes the full/incremental data from one MySQL cluster to another MySQL cluster.
+- Bidirectional data synchronization: Synchronizes the incremental data between two MySQL clusters bidirectionally. Chained replication can be avoided in the synchronization process.
+- Synchronization of shards to the merged table: Synchronizes MySQL sharded tables to the merged table. You can specify the corresponding relationship between the source table and the target table.
+- Online data mutation: Supports heterogeneous schema mutation in the synchronization process.
 
-- 数据输出
+## Features
 
-|   | 是否支持  |
-|---|---|
-| Kafka | ✅  | 
-|  MySQL/TiDB |  ✅ |   
-|  Mongo DB | 开发中  | 
+### Data source support
 
+DRC supports the following data sources:
 
-- 数据变换
+- MySQL binlogs
+- MySQL full data
+- MongoDB Oplogs
 
-|   | 是否支持  |
-|---|---|
-| 数据过滤 | ✅  | 
-|  重命令列 |  ✅ |   
-|   删除列|✅| 
+The support for the following items is in progress:
 
+- TiDB binlogs
+- PostgreSQL WAL logs
 
-### 文档
+### Data output platform support
 
-[架构简介](docs/2.0/00-arch.md)
+DRC supports outputting data to the following platforms:
 
-[快速上手](docs/2.0/01-quick-start.md)
+- Kafka 
+- MySQL
+- TiDB
 
-[配置手册](docs/2.0/02-config-index.md)
+The support for outputting data to MongoDB is in progress. 
 
-[集群部署](docs/2.0/07-k8s.md)
+### Data mutation support
+
+DRC supports the following data mutations:
+
+- Data filtering
+- Renaming columns
+- Deleting columns
+
+### Documentation
+
+- [Architecture](docs/2.0/00-arch-en.md)
+- [Quick Start](docs/2.0/01-quick-start-en.md)
+- [Configuration](docs/2.0/02-config-index-en.md)
+- [Deployment](docs/2.0/07-k8s-en.md)
